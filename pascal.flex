@@ -19,7 +19,7 @@
 %standalone         // Execução independente do analisador sintático.
 %line               // Permite usar yyline.
 %column             // Permite usar yycolumn.
-%class Scanner      // Troca o nome da classe Yylex para Scanner.
+%class pascal      // Troca o nome da classe Yylex para Scanner.
 
 %{
 
@@ -37,10 +37,16 @@
 // Macros:
 BRANCO = [\n| |\t|\r]
 PONTOEVIRGULA = ";"
+VIRGULA = ","
 ABREPARENTESE = "("
 FECHAPARENTESE = ")"
 SOMA = "+"
-ATRIBUICAO = "="
+SUBTRAÇAO = "-"
+MULTIPLICACAO = \*
+DIVISAO = "/"
+MENOR = "<"
+STRING = \'([^\'\\]|\\.)*\' 
+ATRIBUICAO_PASCAL = ":="
 COMPARACAO = "=="
 INTEIRO = 0|[1-9][0-9]*
 ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]*
@@ -54,12 +60,18 @@ ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]*
 {ABREPARENTESE}  { imprimir(yyline, yycolumn, yytext(), "Abre parêntese"); }
 {FECHAPARENTESE} { imprimir(yyline, yycolumn, yytext(), "Fecha parêntese"); }
 {PONTOEVIRGULA}  { imprimir(yyline, yycolumn, yytext(), "Ponto e vírgula"); }
-{ATRIBUICAO}     { imprimir(yyline, yycolumn, yytext(), "Atribuição"); }
+{VIRGULA}        { imprimir(yyline, yycolumn, yytext(), "Vírgula"); }
+{ATRIBUICAO_PASCAL}  { imprimir(yyline, yycolumn, yytext(), "Atribuição (Pascal)"); }
 {COMPARACAO}     { imprimir(yyline, yycolumn, yytext(), "Comparação"); }   
 "if"             { imprimir(yyline, yycolumn, yytext(), "Palavra reservada if"); }
 "then"           { imprimir(yyline, yycolumn, yytext(), "Palavra reservada then"); }
 {BRANCO}         { imprimir(yyline, yycolumn, yytext(), "Espaço em branco"); }
 {ID}             { imprimir(yyline, yycolumn, yytext(), "Identificador"); }
 {SOMA}           { imprimir(yyline, yycolumn, yytext(), "Operador de soma"); }
+{SUBTRAÇAO}      { imprimir(yyline, yycolumn, yytext(), "Operador de subtraçao"); }
+{MULTIPLICACAO}  { imprimir(yyline, yycolumn, yytext(), "Operador de multiplicação");}
+{DIVISAO}        { imprimir(yyline, yycolumn, yytext(), "Operador de divisão"); }
+{MENOR}          { imprimir(yyline, yycolumn, yytext(), "Operador de menor que"); }
+{STRING}         { imprimir(yyline, yycolumn, yytext(), "Cadeia de caracteres"); }
 {INTEIRO}        { imprimir(yyline, yycolumn, yytext(), "Número inteiro"); }
 .                { dispararExcecao(yyline, yycolumn, yytext(), "Caracter inválido"); }
